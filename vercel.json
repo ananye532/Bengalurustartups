@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/prepare-static.mjs",
+  "outputDirectory": "public",
+  "functions": {
+    "api/[...path].js": {
+      "maxDuration": 15,
+      "memory": 1024
+    }
+  },
+  "headers": [
+    {
+      "source": "/shared/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "text/javascript; charset=utf-8" }
+      ]
+    }
+  ]
+}

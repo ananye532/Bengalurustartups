@@ -22,12 +22,19 @@ export function createApp(options = {}) {
   const app = express();
   app.set('db', db);
   app.set('jwtSecret', secret);
+  // Only the standalone server can host the presence WebSocket; a serverless
+  // deployment flips this on never, and the client skips connecting.
+  app.set('realtime', false);
   app.use(express.json({ limit: '2mb' }));
 
   app.use('/api/auth', rateLimit({ windowMs: 5 * 60_000, max: 40 }), authRoutes(db, secret));
   app.use('/api/tracks', trackRoutes(db));
   app.use('/api/races', rateLimit({ windowMs: 60_000, max: 120 }), raceRoutes(db, secret));
-  app.get('/api/health', (_req, res) => res.json({ ok: true, uptime: process.uptime() }));
+  app.get('/api/health', (_req, res) => res.json({
+    ok: true,
+    uptime: process.uptime(),
+    realtime: app.get('realtime') === true,
+  }));
 
   // The browser imports the simulation straight from /shared, so client and
   // server always score with byte-identical code.

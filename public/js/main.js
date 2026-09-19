@@ -17,6 +17,7 @@ const state = {
   race: null,
   raceSession: null,
   presence: null,
+  realtime: false,
   trackDefs: new Map(),
 };
 
@@ -223,6 +224,7 @@ async function startRace(trackId) {
     state.race.start();
 
     state.presence?.close();
+    if (!state.realtime) return;
     state.presence = new Presence(session.token);
     state.presence.connect(trackId, () => {
       const car = state.race?.car;
@@ -360,6 +362,15 @@ window.addEventListener('keydown', (event) => {
 // ---------- boot ----------
 
 (async function boot() {
+  // Presence needs a long-lived server. Ask before opening a socket, so a
+  // serverless deployment does not spend every race retrying a dead endpoint.
+  try {
+    const health = await api.health();
+    state.realtime = health.realtime === true;
+  } catch {
+    state.realtime = false;
+  }
+
   if (!session.token) { show('auth'); return; }
   try {
     const { user } = await api.me();

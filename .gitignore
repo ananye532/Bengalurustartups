@@ -6,3 +6,6 @@ data/
 .env
 .DS_Store
 npm-debug.log*
+
+# build artifact: copied from shared/ by scripts/prepare-static.mjs
+public/shared/

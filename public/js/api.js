@@ -47,4 +47,5 @@ export const api = {
   startRace: (trackId) => request('POST', '/api/races', { trackId }),
   finishRace: (raceId, inputs) => request('POST', `/api/races/${raceId}/finish`, { inputs }),
   myRaces: () => request('GET', '/api/races/mine'),
+  health: () => request('GET', '/api/health'),
 };

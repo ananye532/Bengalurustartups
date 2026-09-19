@@ -8,6 +8,7 @@ const host = process.env.HOST || '0.0.0.0';
 const app = createApp();
 const server = http.createServer(app);
 const realtime = attachRealtime(server, { secret: app.get('jwtSecret') });
+app.set('realtime', true);
 
 server.listen(port, host, () => {
   console.log(`Apex Drift running on http://localhost:${port}`);
