@@ -1,0 +1,22 @@
+{
+  "name": "apex-drift",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack top-down racing game with server-verified lap times, ghosts and live presence.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test \"tests/**/*.test.js\""
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.6.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "ws": "^8.18.3"
+  }
+}

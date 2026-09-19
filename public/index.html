@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apex Drift</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#127950;</text></svg>" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Sign in -->
+    <section id="screen-auth" class="screen active">
+      <div class="panel auth-panel">
+        <h1 class="logo">APEX<span>DRIFT</span></h1>
+        <p class="tagline">Server-verified time attack. Every lap is re-simulated before it counts.</p>
+        <div class="tabs">
+          <button class="tab active" data-mode="login">Sign in</button>
+          <button class="tab" data-mode="register">Create driver</button>
+        </div>
+        <form id="auth-form" autocomplete="on">
+          <label>Driver name
+            <input name="username" required minlength="3" maxlength="20" autocomplete="username" />
+          </label>
+          <label>Password
+            <input name="password" type="password" required minlength="8" autocomplete="current-password" />
+          </label>
+          <p class="error" id="auth-error" hidden></p>
+          <button class="primary" type="submit">Enter the paddock</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Garage / track select -->
+    <section id="screen-garage" class="screen">
+      <header class="bar">
+        <h1 class="logo small">APEX<span>DRIFT</span></h1>
+        <div class="bar-right">
+          <span id="driver-name" class="chip"></span>
+          <button id="logout" class="ghost">Sign out</button>
+        </div>
+      </header>
+      <div class="garage">
+        <div>
+          <h2>Circuits</h2>
+          <div id="track-list" class="track-list"></div>
+        </div>
+        <aside class="panel">
+          <h2>Leaderboard — <span id="lb-track">—</span></h2>
+          <ol id="leaderboard" class="leaderboard"></ol>
+          <h3>Your recent runs</h3>
+          <ul id="recent" class="recent"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Race -->
+    <section id="screen-race" class="screen">
+      <canvas id="stage"></canvas>
+      <div class="hud">
+        <div class="hud-block">
+          <span class="label">Time</span>
+          <span class="value" id="hud-time">0.000</span>
+        </div>
+        <div class="hud-block">
+          <span class="label">Lap</span>
+          <span class="value" id="hud-lap">1/2</span>
+        </div>
+        <div class="hud-block">
+          <span class="label">Best lap</span>
+          <span class="value" id="hud-best">—</span>
+        </div>
+        <div class="hud-block">
+          <span class="label">Speed</span>
+          <span class="value" id="hud-speed">0</span><span class="unit">km/h</span>
+        </div>
+        <div class="hud-block" id="hud-ghost-block" hidden>
+          <span class="label">vs <span id="hud-ghost-name">ghost</span></span>
+          <span class="value" id="hud-ghost">—</span>
+        </div>
+      </div>
+      <div class="countdown" id="countdown" hidden>3</div>
+      <div class="race-controls">
+        <button id="restart" class="ghost">Restart (R)</button>
+        <button id="quit" class="ghost">Back to garage (Esc)</button>
+      </div>
+      <div class="peers" id="peer-list"></div>
+      <div class="results panel" id="results" hidden>
+        <h2 id="results-title">Race complete</h2>
+        <p class="result-time" id="results-time">—</p>
+        <ul id="results-laps" class="laps"></ul>
+        <p class="note" id="results-note"></p>
+        <div class="row">
+          <button id="results-again" class="primary">Race again</button>
+          <button id="results-back" class="ghost">Garage</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
