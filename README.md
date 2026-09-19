@@ -115,6 +115,32 @@ The canvas layer is not covered by the automated suite. It was exercised
 manually with a headless browser: register → race a full distance with real
 keyboard input → server verification → leaderboard.
 
+## Deploying
+
+`server/index.js` is the full version: durable SQLite on disk and the presence
+WebSocket. Run it anywhere that allows a long-lived process (a VPS, Fly, Render,
+Railway, a container).
+
+A serverless host can run it too, with two things switched off by the platform
+rather than by choice:
+
+- **Storage is ephemeral.** SQLite lives at `DATABASE_FILE`, which on a
+  read-only filesystem has to be `/tmp/apex.db`. `/tmp` belongs to one instance
+  and is discarded when that instance is recycled, so accounts and leaderboards
+  disappear — drivers cannot log back in later. Durable storage means moving
+  `server/db.js` to a hosted database.
+- **There is no presence socket.** Serverless functions cannot hold a
+  WebSocket open. The server reports `realtime: false` from `/api/health` and
+  the client skips connecting, so races run normally with an empty peer list.
+
+Lap verification, ghosts and per-instance leaderboards work either way — they
+only need the request that carries the replay.
+
+On Vercel specifically: `vercel.json` sets the build command and output
+directory, `api/[...path].js` exposes the Express app as a catch-all function,
+and the project needs `JWT_SECRET` (required once `NODE_ENV=production`) and
+`DATABASE_FILE=/tmp/apex.db` in its environment.
+
 ## Known limitations
 
 - Single-process SQLite; fine for a handful of drivers, not for scale.
