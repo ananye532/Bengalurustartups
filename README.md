@@ -19,7 +19,7 @@ tests/      node:test suite (physics, geometry, HTTP API)
 ```bash
 npm install
 npm start           # http://localhost:3000
-npm test            # 24 tests
+npm test            # 28 tests
 npm run dev         # same, with --watch
 ```
 
@@ -106,9 +106,10 @@ resulting ribbon overlaps itself.
 
 `npm test` covers the simulation (determinism, braking, checkpoint ordering,
 encode/decode edge cases), track geometry (every circuit is completable and does
-not cross itself), and the HTTP API end to end against an in-memory database
-(auth, validation, verification rejections, session reuse, leaderboard shape,
-rate limiting).
+not cross itself), the HTTP API end to end against an in-memory database (auth,
+validation, verification rejections, session reuse, leaderboard shape, rate
+limiting), and the presence socket with two live clients (room isolation,
+leaving, malformed frames).
 
 The canvas layer is not covered by the automated suite. It was exercised
 manually with a headless browser: register → race a full distance with real

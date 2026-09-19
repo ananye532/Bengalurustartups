@@ -190,7 +190,14 @@ async function refreshRecent() {
 
 // ---------- racing ----------
 
+// Opening a race takes a round trip. Without this guard a double-click would
+// open two server sessions and leave the live race and the session it submits
+// against out of step, depending on which response landed last.
+let startInFlight = false;
+
 async function startRace(trackId) {
+  if (startInFlight) return;
+  startInFlight = true;
   try {
     const [def, opened, ghostRes] = await Promise.all([
       loadTrackDef(trackId),
@@ -228,6 +235,8 @@ async function startRace(trackId) {
   } catch (err) {
     toast(err instanceof ApiError ? err.message : 'could not start the race', true);
     if (err instanceof ApiError && err.status === 401) show('auth');
+  } finally {
+    startInFlight = false;
   }
 }
 
